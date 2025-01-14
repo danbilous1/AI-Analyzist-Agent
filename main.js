@@ -38,6 +38,7 @@ searchBtn.addEventListener("click", function () {
         });
 
         // Give data to AI Analyzist
+        const result;
 
         // Create HTML article
         const article = document.createElement("div");
@@ -45,7 +46,7 @@ searchBtn.addEventListener("click", function () {
         article.innerHTML = `
           <h5>${title}</h5>
           <p>${description}</p>
-          <p>Impact on stock: bullish / bearish</p>
+          <p>Impact on stock: ${result}</p> 
           <p>
             <a
               href="https://www.tradingview.com/symbols/${symbol}/"
