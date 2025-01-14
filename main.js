@@ -38,6 +38,8 @@ searchBtn.addEventListener("click", function () {
         });
 
         // Give data to AI Analyzist
+
+        // result is neutral, bullish or bearish
         const result;
 
         // Create HTML article
