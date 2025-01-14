@@ -40,6 +40,22 @@ searchBtn.addEventListener("click", function () {
         // Give data to AI Analyzist
 
         // Create HTML article
+        const article = document.createElement("div");
+        article.classList.add("w-25");
+        article.innerHTML = `
+          <h5>${title}</h5>
+          <p>${description}</p>
+          <p>Impact on stock: bullish / bearish</p>
+          <p>
+            <a
+              href="https://www.tradingview.com/symbols/${symbol}/"
+              target="_blank"
+              >View on chart</a
+            >
+          </p>
+          <p class="news-date mb-0">${formattedDate}</p>
+        `;
+        newsContainer.appendChild(article);
       });
     });
 });
