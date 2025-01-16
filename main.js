@@ -46,7 +46,13 @@ searchBtn.addEventListener("click", function () {
           ""
         )}; HOW THIS WILL IMPACT ON TSLA STOCK? IN THE OUPTPUT I WANT TO SEE ONLY AND ONLY: "bullish", "bearish" or "neutral";`;
 
-        
+        const data = {
+          contents: [
+            {
+              parts: [{ text: prompt }],
+            },
+          ],
+        };
 
         let analysis = "";
 
