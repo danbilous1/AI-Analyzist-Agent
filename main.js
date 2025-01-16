@@ -1,10 +1,10 @@
 // Your marketaux API token
-const token = "";
+const token = "a1DJjK5SLoaL3WXt1fkEMvMHBFWDcMojTFQ4IpSa";
 
 // Your AI ChatBot API key and link
-const AiKey = "";
+const AiKey = "AIzaSyBwoiF-DUPqk767Kn4Pn0JJRic1YTTrQxk";
 
-// For example Gemini AI ChatBot
+// For example Gemini AI ChatBot: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=GEMINI_API_KEY"
 const AiLink = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${AiKey}`;
 
 // News articles limit
@@ -38,27 +38,45 @@ searchBtn.addEventListener("click", function () {
         });
 
         // Give data to AI Analyzist
+        const prompt = `Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC'. You have heard this news on STOCK: ${symbol}; TITLE: ${title.replace(
+          /[`'"]/g,
+          ""
+        )}; URL TO ARTICLE: ${url}; DESCRIPTION: ${description.replace(
+          /[`'"]/g,
+          ""
+        )}; HOW THIS WILL IMPACT ON TSLA STOCK? IN THE OUPTPUT I WANT TO SEE ONLY AND ONLY: "bullish", "bearish" or "neutral";`;
 
-        // result is neutral, bullish or bearish
-        const result;
+        let analysis = "";
+
+        fetch(AiLink, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            analysis = result.candidates[0].content.parts[0].text;
+          });
 
         // Create HTML article
-        const article = document.createElement("div");
-        article.classList.add("w-25");
-        article.innerHTML = `
+            const article = document.createElement("div");
+            article.classList.add("w-25");
+            article.innerHTML = `
           <h5>${title}</h5>
           <p>${description}</p>
-          <p>Impact on stock: ${result}</p> 
+          <p>Impact on stock: ${analysis}</p>
           <p>
             <a
-              href="https://www.tradingview.com/symbols/${symbol}/"
+              href="${url}"
               target="_blank"
-              >View on chart</a
+              >Read more..</a
             >
           </p>
           <p class="news-date mb-0">${formattedDate}</p>
         `;
-        newsContainer.appendChild(article);
+            newsContainer.appendChild(article);
       });
     });
 });
