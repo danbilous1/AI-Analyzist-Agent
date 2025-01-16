@@ -1,8 +1,8 @@
 // Your marketaux API token
-const token = "a1DJjK5SLoaL3WXt1fkEMvMHBFWDcMojTFQ4IpSa";
+const token = "";
 
 // Your AI ChatBot API key and link
-const AiKey = "AIzaSyBwoiF-DUPqk767Kn4Pn0JJRic1YTTrQxk";
+const AiKey = "";
 
 // For example Gemini AI ChatBot: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=GEMINI_API_KEY"
 const AiLink = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${AiKey}`;
@@ -45,6 +45,8 @@ searchBtn.addEventListener("click", function () {
           /[`'"]/g,
           ""
         )}; HOW THIS WILL IMPACT ON TSLA STOCK? IN THE OUPTPUT I WANT TO SEE ONLY AND ONLY: "bullish", "bearish" or "neutral";`;
+
+        
 
         let analysis = "";
 
