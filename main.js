@@ -37,7 +37,7 @@ searchBtn.addEventListener("click", function () {
           hour12: true,
         });
 
-        // Give data to AI Analyzist
+        // Give data to AI Analyzist MAKE TREE OF THOUGHTS SYSTEM
         const prompt = `Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC'. You have heard this news on STOCK: ${symbol}; TITLE: ${title.replace(
           /[`'"]/g,
           ""
