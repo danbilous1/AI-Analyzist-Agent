@@ -66,9 +66,8 @@ searchBtn.addEventListener("click", function () {
           .then((res) => res.json())
           .then((result) => {
             analysis = result.candidates[0].content.parts[0].text;
-          });
 
-        // Create HTML article
+            // Create HTML article
             const article = document.createElement("div");
             article.classList.add("w-25");
             article.innerHTML = `
@@ -85,6 +84,8 @@ searchBtn.addEventListener("click", function () {
           <p class="news-date mb-0">${formattedDate}</p>
         `;
             newsContainer.appendChild(article);
+          });
       });
     });
 });
+
