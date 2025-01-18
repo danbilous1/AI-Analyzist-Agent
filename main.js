@@ -70,25 +70,6 @@ searchBtn.addEventListener("click", function () {
           /[`'"]/g,
           ""
         )}; Summarize the critical details from this article in bullet points, highlighting actions, results, and any financial terms mentioned.`;
-
-        fetch(AiLink, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [{ text: prompt_1 }],
-              },
-            ],
-          }),
-        })
-          .then((res) => res.json())
-          .then((result) => {
-            analysis = result.candidates[0].content.parts[0].text; // prompt_1 OUTPUT
-          });
-          
           
 
         // Sentiment Analysis
