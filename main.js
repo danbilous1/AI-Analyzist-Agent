@@ -14,6 +14,29 @@ const newsContainer = document.querySelector(".news-container");
 const searchBtn = document.querySelector("#searchButton");
 const ticker = document.querySelector("#tickerInput");
 
+// Function for Tree Of Thoughts
+function analysis(input) {
+  const analysisResult = "";
+  fetch(AiLink, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: [{ text: input }],
+        },
+      ],
+    }),
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      analysisResult = result.candidates[0].content.parts[0].text; // output
+    });
+  return analysisResult;
+}
+
 searchBtn.addEventListener("click", function () {
   fetch(
     `https://api.marketaux.com/v1/news/all?symbols=${ticker.value}&filter_entities=true&language=en&api_token=${token}&limit=${limit}`
@@ -38,23 +61,46 @@ searchBtn.addEventListener("click", function () {
         });
 
         // Give data to AI Analyzist MAKE TREE OF THOUGHTS SYSTEM
-        const prompt = `Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC'. You have heard this news on STOCK: ${symbol}; TITLE: ${title.replace(
+
+        let analysis = "";
+
+        // Key Information Extraction
+        const prompt_1 = `Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC'. You have heard this news on STOCK: ${symbol}; TITLE: ${title.replace(
           /[`'"]/g,
           ""
         )}; URL TO ARTICLE: ${url}; DESCRIPTION: ${description.replace(
           /[`'"]/g,
           ""
-        )}; HOW THIS WILL IMPACT ON TSLA STOCK? IN THE OUPTPUT I WANT TO SEE ONLY AND ONLY: "bullish", "bearish" or "neutral";`;
+        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, and any financial terms mentioned.`;
 
-        const data = {
-          contents: [
-            {
-              parts: [{ text: prompt }],
-            },
-          ],
-        };
+        fetch(AiLink, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [{ text: prompt_1 }],
+              },
+            ],
+          }),
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            analysis = result.candidates[0].content.parts[0].text; // prompt_1 OUTPUT
+          });
+          
+          
 
-        let analysis = "";
+        // Sentiment Analysis
+        const prompt_2 = `I JUST RECEIVED THIS TEXT FROM Analyzist working at the best hedge fund 'Citadel LLC': ${"prompt_1 result"}; Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
+
+        // Market Impact Assessment
+        const prompt_3 = `${"promt_2 result"}; Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC' with 10+ years of experience. Analyze how the sentiment of the news might impact the stock market. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
+
+        // Final Decision
+        const prompt_4 = `${"prompt_3 result"}; Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. IN THE OUTPUT I WANT TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
 
         fetch(AiLink, {
           method: "POST",
