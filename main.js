@@ -15,28 +15,26 @@ const searchBtn = document.querySelector("#searchButton");
 const ticker = document.querySelector("#tickerInput");
 
 // Function for Tree Of Thoughts
-function analysis(input) {
-  const analysisResult = "";
-  fetch(AiLink, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          parts: [{ text: input }],
-        },
-      ],
-    }),
-  })
-    .then((res) => res.json())
-    .then((result) => {
-      analysisResult = result.candidates[0].content.parts[0].text; // output
+async function analysis(input) {
+  try {
+    const response = await fetch(AiLink, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [{ text: input }],
+          },
+        ],
+      }),
     });
-  return analysisResult;
+    const result = await response.json();
+    const analysisResult = result.candidates[0]?.content?.parts[0]?.text; // Safely access the result
+    return analysisResult;
+  } 
 }
-
 searchBtn.addEventListener("click", function () {
   fetch(
     `https://api.marketaux.com/v1/news/all?symbols=${ticker.value}&filter_entities=true&language=en&api_token=${token}&limit=${limit}`
