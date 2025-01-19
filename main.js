@@ -8,6 +8,7 @@ const AiKey = "";
 const AiLink = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${AiKey}`;
 
 // News articles limit
+// News articles limit
 const limit = 3;
 
 const newsContainer = document.querySelector(".news-container");
@@ -74,6 +75,7 @@ searchBtn.addEventListener("click", function () {
         
         
         // I MADE FUNCTION FOR EACH PROMPT ON LINE 18TH
+        
 
         fetch(AiLink, {
           method: "POST",
@@ -104,6 +106,21 @@ searchBtn.addEventListener("click", function () {
         // Final Decision
         const prompt_4 = `${"prompt_3 result"}; Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. IN THE OUTPUT I WANT TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
 
+        
+        // Key Information Extraction OUTPUT
+        const analysis_1 = await analysis(prompt_1);
+        
+        // Sentiment Analysis OUTPUT
+        const analysis_2 = await analysis(prompt_2);
+        
+        // Market Impact Assessment OUTPUT
+        const analysis_3 = await analysis(prompt_3);
+        
+        // Final Decision OUTPUT
+        const analysis_4 = await analysis(prompt_4);
+        
+        
+        
         fetch(AiLink, {
           method: "POST",
           headers: {
@@ -136,5 +153,6 @@ searchBtn.addEventListener("click", function () {
       });
     });
 });
+
 
 
