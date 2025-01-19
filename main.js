@@ -72,30 +72,6 @@ searchBtn.addEventListener("click", function () {
           /[`'"]/g,
           ""
         )}; Summarize the critical details from this article in bullet points, highlighting actions, results, and any financial terms mentioned.`;
-        
-        
-        // I MADE FUNCTION FOR EACH PROMPT ON LINE 18TH
-        
-
-        fetch(AiLink, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [{ text: prompt_1 }],
-              },
-            ],
-          }),
-        })
-          .then((res) => res.json())
-          .then((result) => {
-            analysis = result.candidates[0].content.parts[0].text; // prompt_1 OUTPUT
-          });
-          
-          
 
         // Sentiment Analysis
         const prompt_2 = `I JUST RECEIVED THIS TEXT FROM Analyzist working at the best hedge fund 'Citadel LLC': ${"prompt_1 result"}; Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
