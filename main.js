@@ -35,6 +35,7 @@ async function analysis(input) {
     return analysisResult;
   } 
 }
+
 searchBtn.addEventListener("click", function () {
   fetch(
     `https://api.marketaux.com/v1/news/all?symbols=${ticker.value}&filter_entities=true&language=en&api_token=${token}&limit=${limit}`
@@ -70,6 +71,28 @@ searchBtn.addEventListener("click", function () {
           /[`'"]/g,
           ""
         )}; Summarize the critical details from this article in bullet points, highlighting actions, results, and any financial terms mentioned.`;
+        
+        
+        // I MADE FUNCTION FOR EACH PROMPT ON LINE 18TH
+
+        fetch(AiLink, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [{ text: prompt_1 }],
+              },
+            ],
+          }),
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            analysis = result.candidates[0].content.parts[0].text; // prompt_1 OUTPUT
+          });
+          
           
 
         // Sentiment Analysis
@@ -113,4 +136,5 @@ searchBtn.addEventListener("click", function () {
       });
     });
 });
+
 
