@@ -7,7 +7,7 @@ const AiKey = "";
 // For example Gemini AI ChatBot: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=GEMINI_API_KEY"
 const AiLink = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${AiKey}`;
 
-// News articles limit
+
 // News articles limit
 const limit = 3;
 
@@ -60,9 +60,7 @@ searchBtn.addEventListener("click", function () {
           hour12: true,
         });
 
-        // Give data to AI Analyzist MAKE TREE OF THOUGHTS SYSTEM
-
-        let analysis = "";
+        // Tree of Thoughts system
 
         // Key Information Extraction
         const prompt_1 = `Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC'. You have heard this news on STOCK: ${symbol}; TITLE: ${title.replace(
@@ -73,25 +71,24 @@ searchBtn.addEventListener("click", function () {
           ""
         )}; Summarize the critical details from this article in bullet points, highlighting actions, results, and any financial terms mentioned.`;
 
-        // Sentiment Analysis
-        const prompt_2 = `I JUST RECEIVED THIS TEXT FROM Analyzist working at the best hedge fund 'Citadel LLC': ${"prompt_1 result"}; Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
-
-        // Market Impact Assessment
-        const prompt_3 = `${"promt_2 result"}; Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC' with 10+ years of experience. Analyze how the sentiment of the news might impact the stock market. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
-
-        // Final Decision
-        const prompt_4 = `${"prompt_3 result"}; Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. IN THE OUTPUT I WANT TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
-
-        
         // Key Information Extraction OUTPUT
         const analysis_1 = await analysis(prompt_1);
-        
+
+        // Sentiment Analysis
+        const prompt_2 = `I JUST RECEIVED THIS TEXT FROM Analyzist working at the best hedge fund 'Citadel LLC': ${analysis_1}; Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
+
         // Sentiment Analysis OUTPUT
         const analysis_2 = await analysis(prompt_2);
-        
+
+        // Market Impact Assessment
+        const prompt_3 = `${analysis_2}; Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC' with 10+ years of experience. Analyze how the sentiment of the news might impact the stock market. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
+
         // Market Impact Assessment OUTPUT
         const analysis_3 = await analysis(prompt_3);
-        
+
+        // Final Decision
+        const prompt_4 = `${analysis_3}; Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. IN THE OUTPUT I WANT TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
+
         // Final Decision OUTPUT
         const analysis_4 = await analysis(prompt_4);
         
