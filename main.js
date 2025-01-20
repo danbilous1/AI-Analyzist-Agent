@@ -94,17 +94,6 @@ searchBtn.addEventListener("click", function () {
         
         
         
-        fetch(AiLink, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((res) => res.json())
-          .then((result) => {
-            analysis = result.candidates[0].content.parts[0].text;
-
             // Create HTML article
             const article = document.createElement("div");
             article.classList.add("w-25");
@@ -122,7 +111,6 @@ searchBtn.addEventListener("click", function () {
           <p class="news-date mb-0">${formattedDate}</p>
         `;
             newsContainer.appendChild(article);
-          });
       });
     });
 });
