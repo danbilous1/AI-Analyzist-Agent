@@ -91,16 +91,15 @@ searchBtn.addEventListener("click", function () {
 
         // Final Decision OUTPUT
         const analysis_4 = await analysis(prompt_4);
+
         
-        
-        
-            // Create HTML article
-            const article = document.createElement("div");
-            article.classList.add("w-25");
-            article.innerHTML = `
+        // Create HTML article
+        const article = document.createElement("div");
+        article.classList.add("w-25");
+        article.innerHTML = `
           <h5>${title}</h5>
           <p>${description}</p>
-          <p>Impact on stock: ${analysis}</p>
+          <p>Impact on stock: ${analysis_4}</p>
           <p>
             <a
               href="${url}"
@@ -110,7 +109,7 @@ searchBtn.addEventListener("click", function () {
           </p>
           <p class="news-date mb-0">${formattedDate}</p>
         `;
-            newsContainer.appendChild(article);
+        newsContainer.appendChild(article);
       });
     });
 });
