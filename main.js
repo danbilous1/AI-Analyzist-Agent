@@ -15,7 +15,7 @@ const newsContainer = document.querySelector(".news-container");
 const searchBtn = document.querySelector("#searchButton");
 const ticker = document.querySelector("#tickerInput");
 
-// Function for Tree Of Thoughts
+// Function for Tree of Thoughts System
 async function analysis(input) {
   try {
     const response = await fetch(AiLink, {
@@ -32,9 +32,12 @@ async function analysis(input) {
       }),
     });
     const result = await response.json();
-    const analysisResult = result.candidates[0]?.content?.parts[0]?.text; // Safely access the result
+    const analysisResult = result.candidates[0]?.content?.parts[0]?.text;
     return analysisResult;
-  } 
+  } catch (error) {
+    console.error("Error during analysis:", error);
+    return null; // Return null or handle error as needed
+  }
 }
 
 searchBtn.addEventListener("click", function () {
