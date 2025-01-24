@@ -7,8 +7,7 @@ const AiKey = "";
 // Gemini API Link
 const AiLink = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${AiKey}`;
 
-
-// News articles limit
+// News articles limit; Free Version Limit is 3;
 const limit = 3;
 
 const newsContainer = document.querySelector(".news-container");
@@ -46,7 +45,7 @@ searchBtn.addEventListener("click", function () {
   )
     .then((response) => response.json())
     .then((data) => {
-      data.data.forEach((item) => {
+      data.data.forEach(async (item) => {
         const title = item.title;
         const description = item.description;
         const url = item.url;
@@ -95,7 +94,8 @@ searchBtn.addEventListener("click", function () {
         // Final Decision OUTPUT
         const analysis_4 = await analysis(prompt_4);
 
-        
+        // ADD LOCAL STORAGE FOR NEWS ARTICLES & SHOW USER HOW MANY REQUESTES R LEFT
+
         // Create HTML article
         const article = document.createElement("div");
         article.classList.add("w-25");
@@ -116,6 +116,3 @@ searchBtn.addEventListener("click", function () {
       });
     });
 });
-
-
-
