@@ -40,6 +40,9 @@ async function analysis(input) {
 }
 
 searchBtn.addEventListener("click", function () {
+  const loading = document.createElement("h4");
+  loading.innerText = "Loading..";
+  newsContainer.appendChild(loading);
   fetch(
     `https://api.marketaux.com/v1/news/all?symbols=${ticker.value}&filter_entities=true&language=en&api_token=${token}&limit=${limit}`
   )
@@ -116,3 +119,4 @@ searchBtn.addEventListener("click", function () {
       });
     });
 });
+
