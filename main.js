@@ -10,6 +10,7 @@ const AiLink = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1
 // News articles limit; Free Version Limit is 3;
 const limit = 3;
 
+const container = document.querySelector(".container");
 const newsContainer = document.querySelector(".news-container");
 const searchBtn = document.querySelector("#searchButton");
 const ticker = document.querySelector("#tickerInput");
@@ -40,14 +41,17 @@ async function analysis(input) {
 }
 
 searchBtn.addEventListener("click", function () {
-  const loading = document.createElement("h4");
+  const loading = document.createElement("p");
   loading.innerText = "Loading..";
-  newsContainer.appendChild(loading);
+  container.appendChild(loading);
+
   fetch(
     `https://api.marketaux.com/v1/news/all?symbols=${ticker.value}&filter_entities=true&language=en&api_token=${token}&limit=${limit}`
   )
     .then((response) => response.json())
     .then((data) => {
+      let processedCount = 0; // Counter to track processed items
+
       data.data.forEach(async (item) => {
         const title = item.title;
         const description = item.description;
@@ -74,7 +78,7 @@ searchBtn.addEventListener("click", function () {
         )}; URL TO ARTICLE: ${url}; DESCRIPTION: ${description.replace(
           /[`'"]/g,
           ""
-        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, and any financial terms mentioned.`;
+        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, and any financial terms mentioned. Sort, what is important or less important`;
 
         // Key Information Extraction OUTPUT
         const analysis_1 = await analysis(prompt_1);
@@ -97,8 +101,6 @@ searchBtn.addEventListener("click", function () {
         // Final Decision OUTPUT
         const analysis_4 = await analysis(prompt_4);
 
-        // ADD LOCAL STORAGE FOR NEWS ARTICLES & SHOW USER HOW MANY REQUESTES R LEFT
-
         // Create HTML article
         const article = document.createElement("div");
         article.classList.add("w-25");
@@ -116,6 +118,14 @@ searchBtn.addEventListener("click", function () {
           <p class="news-date mb-0">${formattedDate}</p>
         `;
         newsContainer.appendChild(article);
+
+        // Increment the processed count
+        processedCount++;
+
+        if (processedCount === limit) {
+          console.log("check check check");
+          loading.innerText = "";
+        }
       });
     });
 });
