@@ -52,8 +52,10 @@
     </style>
   </head>
   <body>
-    <div>
-      <div class="mb-4 text-center">
+    <p id="switch" class="top-right-button">Analyze Your Article</p>
+
+    <div class="news">
+      <div class="mb-4 text-center container">
         <label for="tickerInput" class="form-label"
           ><strong>Enter Stock Ticker:</strong></label
         >
@@ -61,13 +63,34 @@
           type="text"
           id="tickerInput"
           class="form-control w-50 mx-auto input"
-          placeholder="e.g., TSLA, AAPL, AMZN"
+          placeholder="e.g., TSLA"
         />
-        <button id="searchButton" class="btn btn-primary mt-3">Search</button>
+        <button id="searchButton" class="btn btn-primary mt-3">
+          Analyze with AI
+        </button>
       </div>
       <h3 class="text-center mb-4">Last news:</h3>
       <div class="news-container"></div>
     </div>
+
+    <div class="own-news hidden">
+      <div class="mb-4 text-center container">
+        <label for="newsInput" class="form-label"
+          ><strong>Analyze your own news article:</strong></label
+        >
+        <input
+          type="text"
+          id="newsInput"
+          class="form-control mx-auto news-input"
+          placeholder="Your Own News Article"
+        />
+        <button id="analyzeButton" class="btn btn-primary mt-3">
+          Analyze with AI
+        </button>
+      </div>
+      <p class="news-analysis"></p>
+    </div>
   </body>
   <script src="./main.js"></script>
 </html>
+
