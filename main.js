@@ -19,6 +19,11 @@ const news = document.querySelector(".news");
 const ownNews = document.querySelector(".own-news");
 const switchBtn = document.querySelector("#switch");
 
+switchBtn.addEventListener("click", function () {
+  news.classList.add("hidden");
+  ownNews.classList.remove("hidden");
+});
+
 // Function for Tree of Thoughts System
 async function analysis(input) {
   try {
