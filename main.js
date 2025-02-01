@@ -15,6 +15,10 @@ const newsContainer = document.querySelector(".news-container");
 const searchBtn = document.querySelector("#searchButton");
 const ticker = document.querySelector("#tickerInput");
 
+const news = document.querySelector(".news");
+const ownNews = document.querySelector(".own-news");
+const switchBtn = document.querySelector("#switch");
+
 // Function for Tree of Thoughts System
 async function analysis(input) {
   try {
