@@ -19,9 +19,10 @@ const news = document.querySelector(".news");
 const ownNews = document.querySelector(".own-news");
 const switchBtn = document.querySelector("#switch");
 
+// Switch Button to analyze your own News Article
 switchBtn.addEventListener("click", function () {
-  news.classList.add("hidden");
-  ownNews.classList.remove("hidden");
+  news.classList.toggle("hidden");
+  ownNews.classList.toggle("hidden");
 });
 
 // Function for Tree of Thoughts System
