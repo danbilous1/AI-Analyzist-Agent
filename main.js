@@ -19,7 +19,6 @@ const news = document.querySelector(".news");
 const ownNews = document.querySelector(".own-news");
 const switchBtn = document.querySelector("#switch");
 
-// Switch Button to analyze your own News Article
 switchBtn.addEventListener("click", function () {
   news.classList.toggle("hidden");
   ownNews.classList.toggle("hidden");
@@ -52,8 +51,13 @@ async function analysis(input) {
 
 searchBtn.addEventListener("click", function () {
   const loading = document.createElement("p");
-  loading.innerText = "Loading..";
+  loading.classList.add("loading", "mt-2");
+  loading.innerText = "Summarizing critical details..";
   container.appendChild(loading);
+
+  if (newsContainer.children.length == limit) {
+    newsContainer.innerHTML = "";
+  }
 
   fetch(
     `https://api.marketaux.com/v1/news/all?symbols=${ticker.value}&filter_entities=true&language=en&api_token=${token}&limit=${limit}`
@@ -95,18 +99,21 @@ searchBtn.addEventListener("click", function () {
 
         // Sentiment Analysis
         const prompt_2 = `I JUST RECEIVED THIS TEXT FROM Analyzist working at the best hedge fund 'Citadel LLC': ${analysis_1}; Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
+        loading.innerText = "Sentiment Analysis..";
 
         // Sentiment Analysis OUTPUT
         const analysis_2 = await analysis(prompt_2);
 
         // Market Impact Assessment
         const prompt_3 = `${analysis_2}; Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC' with 10+ years of experience. Analyze how the sentiment of the news might impact the stock market. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
+        loading.innerText = "Market Impact Assessment..";
 
         // Market Impact Assessment OUTPUT
         const analysis_3 = await analysis(prompt_3);
 
         // Final Decision
         const prompt_4 = `${analysis_3}; Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. IN THE OUTPUT I WANT TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
+        loading.innerText = "Final Decision..";
 
         // Final Decision OUTPUT
         const analysis_4 = await analysis(prompt_4);
@@ -133,10 +140,10 @@ searchBtn.addEventListener("click", function () {
         processedCount++;
 
         if (processedCount === limit) {
-          console.log("check check check");
           loading.innerText = "";
         }
       });
     });
 });
+
 
