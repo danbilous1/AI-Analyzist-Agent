@@ -92,7 +92,7 @@ searchBtn.addEventListener("click", function () {
         )}; URL TO ARTICLE: ${url}; DESCRIPTION: ${description.replace(
           /[`'"]/g,
           ""
-        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, and any financial terms mentioned. Sort, what is important or less important`;
+        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned and compare current date with news date to see if it is important right now or not. Read if news article is exactly about ${symbol}. Sort, what is important or less important. Write down news date and current date. Current date: ${date}`;
 
         // Key Information Extraction OUTPUT
         const analysis_1 = await analysis(prompt_1);
