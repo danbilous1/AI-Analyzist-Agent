@@ -55,6 +55,8 @@ searchBtn.addEventListener("click", function () {
   loading.innerText = "Summarizing critical details..";
   container.appendChild(loading);
 
+  const date = new Date(); // Current Date is needed for better output result
+
   if (newsContainer.children.length == limit) {
     newsContainer.innerHTML = "";
   }
@@ -113,7 +115,7 @@ searchBtn.addEventListener("click", function () {
 
         // Final Decision
         const prompt_4 = `${analysis_3}; Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. IN THE OUTPUT I WANT TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
-        loading.innerText = "Final Decision..";
+        loading.innerText = "Loading..";
 
         // Final Decision OUTPUT
         const analysis_4 = await analysis(prompt_4);
