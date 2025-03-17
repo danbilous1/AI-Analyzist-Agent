@@ -85,36 +85,34 @@ searchBtn.addEventListener("click", function () {
           hour12: true,
         });
 
-        // Tree of Thoughts system
-
         // Key Information Extraction
-        const prompt_1 = `Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC'. You have heard this news on STOCK: ${symbol}; TITLE: ${title.replace(
+        const prompt_1 = `The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. You have heard this news on STOCK: ${symbol}; TITLE: ${title.replace(
           /[`'"]/g,
           ""
         )}; URL TO ARTICLE: ${url}; DESCRIPTION: ${description.replace(
           /[`'"]/g,
           ""
-        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned and compare current date with news date to see if it is important right now or not. Read if news article is exactly about ${symbol}. Sort, what is important or less important. Write down news date and current date. Current date: ${date}`;
+        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned. Compare current date with news date. Importantly, read if news article is exactly about ${symbol}. Sort, what is important or less important. Current date: ${date}`;
 
         // Key Information Extraction OUTPUT
         const analysis_1 = await analysis(prompt_1);
 
         // Sentiment Analysis
-        const prompt_2 = `I JUST RECEIVED THIS TEXT FROM Analyzist working at the best hedge fund 'Citadel LLC': ${analysis_1}; Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
+        const prompt_2 = `I JUST RECEIVED THIS TEXT FROM Analyzist working at the best hedge fund 'Citadel LLC': ${analysis_1}; The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. TASK: Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
         loading.innerText = "Sentiment Analysis..";
 
         // Sentiment Analysis OUTPUT
         const analysis_2 = await analysis(prompt_2);
 
         // Market Impact Assessment
-        const prompt_3 = `${analysis_2}; Imagine you are professional Analyzist working at the best hedge fund 'Citadel LLC' with 10+ years of experience. Analyze how the sentiment of the news might impact the stock market. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
+        const prompt_3 = `${analysis_2}; The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. Analyze how the sentiment of the news might impact the stock market. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
         loading.innerText = "Market Impact Assessment..";
 
         // Market Impact Assessment OUTPUT
         const analysis_3 = await analysis(prompt_3);
 
         // Final Decision
-        const prompt_4 = `${analysis_3}; Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. IN THE OUTPUT I WANT TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
+        const prompt_4 = `${analysis_3}; The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. AS THE OUTPUT USER WANTS TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
         loading.innerText = "Loading..";
 
         // Final Decision OUTPUT
