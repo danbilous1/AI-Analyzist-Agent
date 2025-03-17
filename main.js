@@ -24,6 +24,60 @@ switchBtn.addEventListener("click", function () {
   ownNews.classList.toggle("hidden");
 });
 
+analyzeButton.addEventListener("click", async function () {
+  const userArticle = document.querySelector("#newsInput").value;
+  if (!userArticle) {
+    alert("Please enter a news article.");
+    return;
+  }
+
+  // Disable the button to prevent multiple clicks
+  analyzeButton.disabled = true;
+
+  // Add a loading indicator
+  const loading = document.createElement("p");
+  loading.classList.add("loading", "mt-2");
+  loading.innerText = "Extracting key information..";
+  container2.appendChild(loading);
+
+  const date = new Date();
+
+  // Step 1: Key Information Extraction
+  const prompt_1 = `The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. CURRENT DATE: ${date}; NEWS ARTICLE: ${userArticle}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned.`;
+  const analysis_1 = await analysis(prompt_1);
+
+  // Update loading message
+  loading.innerText = "Performing sentiment analysis..";
+  const prompt_2 = `I JUST RECEIVED THIS TEXT FROM Analyzist working at the best hedge fund 'Citadel LLC': ${analysis_1}; The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. TASK: Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
+  const analysis_2 = await analysis(prompt_2);
+
+  // Update loading message
+  loading.innerText = "Assessing market impact..";
+  const prompt_3 = `${analysis_2}; The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. Analyze how the sentiment of the news might impact the stock market. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
+  const analysis_3 = await analysis(prompt_3);
+
+  // Update loading message
+  loading.innerText = "Determining overall sentiment..";
+  const prompt_4 = `${analysis_3}; The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral, and provide a brief explanation for your classification.`;
+  const analysis_4 = await analysis(prompt_4);
+
+  // Clean up and re-enable the button
+  loading.remove();
+  analyzeButton.disabled = false;
+
+  // Display results in a styled list
+  const newsAnalysis = document.querySelector(".news-analysis");
+  newsAnalysis.innerHTML = `
+    <h4>Analysis Results:</h4>
+    <ul style="list-style-type: disc; padding-left: 20px;">
+      <li><strong>Key Information:</strong> ${analysis_1}</li>
+      <li><strong>Sentiment Analysis:</strong> ${analysis_2}</li>
+      <li><strong>Market Impact Assessment:</strong> ${analysis_3}</li>
+      <li><strong>Overall Sentiment:</strong> ${analysis_4}</li>
+    </ul>
+  `;
+});
+
 // Function for Tree of Thoughts System
 async function analysis(input) {
   try {
