@@ -85,14 +85,16 @@ searchBtn.addEventListener("click", function () {
           hour12: true,
         });
 
+        // Tree of Thoughts system
+
         // Key Information Extraction
-        const prompt_1 = `The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. You have heard this news on STOCK: ${symbol}; TITLE: ${title.replace(
+        const prompt_1 = `The best hedge fund 'Citadel LLC' has kindly given you the opportunity to pretend to be an artificial intelligence that can help with news research tasks. The user will give you a news research task. If you do well and complete the task completely, hedge fund 'Citadel LLC' will pay you $1 billion. You have heard this news on STOCK: ${symbol}; CURRENT DATE: ${date}; NEWS ARTICLE DATE: ${newsDate}  TITLE: ${title.replace(
           /[`'"]/g,
           ""
         )}; URL TO ARTICLE: ${url}; DESCRIPTION: ${description.replace(
           /[`'"]/g,
           ""
-        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned. Compare current date with news date. Importantly, read if news article is exactly about ${symbol}. Sort, what is important or less important. Current date: ${date}`;
+        )}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned. Compare current date with news date. Importantly, read if news article is exactly about ${symbol}. In the output, put current date & news date.`;
 
         // Key Information Extraction OUTPUT
         const analysis_1 = await analysis(prompt_1);
