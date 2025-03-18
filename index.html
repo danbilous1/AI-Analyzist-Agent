@@ -60,11 +60,23 @@
       .hidden {
         display: none;
       }
+      .news-analysis ul {
+        list-style-type: disc;
+        padding-left: 20px;
+        margin-top: 10px;
+      }
+      .news-analysis li {
+        margin-bottom: 10px;
+      }
+      .news-analysis strong {
+        color: #333;
+      }
     </style>
   </head>
   <body>
-    <p id="switch" class="top-right-button">Analyze Your Article</p>
+    <p id="switch" class="top-right-button">Analyze Your Own Article</p>
 
+    <!-- Stock News Section -->
     <div class="news">
       <div class="mb-4 text-center container">
         <label for="tickerInput" class="form-label"
@@ -84,8 +96,9 @@
       <div class="news-container"></div>
     </div>
 
+    <!-- Analyze Your Own Article Section -->
     <div class="own-news hidden">
-      <div class="mb-4 text-center container">
+      <div class="mb-4 text-center container2">
         <label for="newsInput" class="form-label"
           ><strong>Analyze your own news article:</strong></label
         >
@@ -99,10 +112,10 @@
           Analyze with AI
         </button>
       </div>
-      <p class="news-analysis"></p>
+      <div class="news-analysis"></div>
     </div>
-  </body>
-  <script src="./main.js"></script>
-</html>
 
+    <script src="./main.js"></script>
+  </body>
+</html>
 
