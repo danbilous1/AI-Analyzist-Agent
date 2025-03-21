@@ -25,6 +25,7 @@ switchBtn.addEventListener("click", function () {
       : "Analyze Your Own Article";
 });
 
+// Generic Analysis Function for Gemini API
 async function analysis(input) {
   try {
     const response = await fetch(AiLink, {
@@ -67,20 +68,29 @@ analyzeButton.addEventListener("click", async function () {
   const prompt1 = `CURRENT DATE: ${date}; NEWS ARTICLE: ${userArticle}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned.`;
   const analysis1 = cleanText(await analysis(prompt1));
 
-  // Step 2: Sentiment Analysis (concise)
+  // Step 2: Sentiment Analysis
   loading.innerText = "Performing sentiment analysis..";
-  const prompt2 = `${analysis1}; TASK: Determine the sentiment of the news: positive, negative, or neutral. Provide a one-sentence justification.`;
+  const prompt2 = `${analysis1}; TASK: State the sentiment of the news as 'The sentiment is [positive/negative/neutral]' and then, in a separate sentence, provide the main reason for this sentiment, starting with 'This is because...'.`;
   const analysis2 = cleanText(await analysis(prompt2));
 
-  // Step 3: Market Impact Assessment (concise)
+  // Step 3: Market Impact Assessment
   loading.innerText = "Assessing market impact..";
-  const prompt3 = `${analysis2}; Analyze the potential market impact in one sentence: would it be bullish, bearish, or neutral for the stock market?`;
+  const prompt3 = `${analysis2}; State the market impact as 'The market impact is [bullish/bearish/neutral]' and then, in a separate sentence, provide the primary reason for this impact, starting with 'This is because...'.`;
   const analysis3 = cleanText(await analysis(prompt3));
 
-  // Step 4: Overall Sentiment (specific phrase)
+  // Step 4: Overall Sentiment with separate reason
   loading.innerText = "Determining overall sentiment..";
-  const prompt4 = `${analysis3}; Based on the analysis, state only: 'The overall sentiment of the article is [sentiment].' where [sentiment] is bearish, bullish, or neutral.`;
+  const prompt4 = `${analysis3}; Based on the analysis, provide exactly two sentences:
+  1. "The overall sentiment of the article is [bearish/bullish/neutral]."
+  2. "This is because [brief reason]."`;
   const analysis4 = cleanText(await analysis(prompt4));
+
+  // Extract sentiment and reason with regex
+  const sentimentMatch = analysis4.match(/The overall sentiment of the article is (bearish|bullish|neutral)\./);
+  const reasonMatch = analysis4.match(/This is because (.+?)\./);
+
+  const sentimentSentence = sentimentMatch ? sentimentMatch[0] : "Sentiment classification not found.";
+  const reasonSentence = reasonMatch ? reasonMatch[0] : "Reason not found.";
 
   // Clear input field
   document.querySelector("#newsInput").value = "";
@@ -93,10 +103,11 @@ analyzeButton.addEventListener("click", async function () {
   const resultContainer = document.createElement("div");
   resultContainer.classList.add("analysis-result");
   resultContainer.innerHTML = `
-    <h4 class="sentiment">${analysis4}</h4>
+    <h4 class="sentiment">${sentimentSentence}</h4>
     <ul class="details">
       <li><strong>Sentiment Analysis:</strong> ${analysis2}</li>
       <li><strong>Market Impact Assessment:</strong> ${analysis3}</li>
+      <li><strong>Reason for Overall Sentiment:</strong> ${reasonSentence}</li>
     </ul>
   `;
 
