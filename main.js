@@ -14,8 +14,17 @@ const news = document.querySelector(".news");
 const ownNews = document.querySelector(".own-news");
 const analyzeButton = document.querySelector("#analyzeButton");
 const switchBtn = document.querySelector("#switch");
+const newsInput = document.querySelector("#newsInput");
 
-// Toggle between Stock News and Own Article sections
+// Function to adjust textarea height
+function adjustTextareaHeight() {
+  newsInput.style.height = "auto";
+  newsInput.style.height = `${newsInput.scrollHeight}px`;
+}
+
+newsInput.addEventListener("input", adjustTextareaHeight);
+adjustTextareaHeight();
+
 switchBtn.addEventListener("click", function () {
   news.classList.toggle("hidden");
   ownNews.classList.toggle("hidden");
@@ -23,6 +32,7 @@ switchBtn.addEventListener("click", function () {
     switchBtn.innerText === "Analyze Your Own Article"
       ? "Analyze Stock News Article"
       : "Analyze Your Own Article";
+  adjustTextareaHeight();
 });
 
 // Generic Analysis Function for Gemini API
@@ -65,17 +75,17 @@ analyzeButton.addEventListener("click", async function () {
   const cleanText = (text) => text.replace(/\*\*/g, "").replace(/\*/g, "");
 
   // Step 1: Key Information (not displayed)
-  const prompt1 = `CURRENT DATE: ${date}; NEWS ARTICLE: ${userArticle}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned.`;
+  const prompt1 = `NEWS ARTICLE: ${userArticle}; YOUR TASKS: 1. IMPORTANT! If news reported PAST results with no HUGE potential future impact, it is neutral and NOT important. Justify your reasoning. 2. Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned.`;
   const analysis1 = cleanText(await analysis(prompt1));
 
   // Step 2: Sentiment Analysis
   loading.innerText = "Performing sentiment analysis..";
-  const prompt2 = `${analysis1}; TASK: State the sentiment of the news as 'The sentiment is [positive/negative/neutral]' and then, in a separate sentence, provide the main reason for this sentiment, starting with 'This is because...'.`;
+  const prompt2 = `${analysis1}; TASKS: 1. IMPORTANT! If news reported PAST results with no HUGE potential future impact, it is neutral and NOT important. Justify your reasoning. HOW OUTPUT NEEDS TO LOOK LIKE: State the sentiment of the news as 'The sentiment is [positive/negative/neutral]' and then, in a separate sentence, provide the main reason for this sentiment, starting with 'This is because...'.`;
   const analysis2 = cleanText(await analysis(prompt2));
 
   // Step 3: Market Impact Assessment
   loading.innerText = "Assessing market impact..";
-  const prompt3 = `${analysis2}; State the market impact as 'The market impact is [bullish/bearish/neutral]' and then, in a separate sentence, provide the primary reason for this impact, starting with 'This is because...'.`;
+  const prompt3 = `${analysis2}; TASKS: 1. IMPORTANT! If news reported PAST results with no HUGE potential future impact, it is neutral and NOT important. Justify your reasoning. HOW OUTPUT NEEDS TO LOOK LIKE: State the market impact as 'The market impact is [bullish/bearish/neutral]' and then, in a separate sentence, provide the primary reason for this impact, starting with 'This is because...'.`;
   const analysis3 = cleanText(await analysis(prompt3));
 
   // Step 4: Overall Sentiment with separate reason
@@ -86,14 +96,19 @@ analyzeButton.addEventListener("click", async function () {
   const analysis4 = cleanText(await analysis(prompt4));
 
   // Extract sentiment and reason with regex
-  const sentimentMatch = analysis4.match(/The overall sentiment of the article is (bearish|bullish|neutral)\./);
+  const sentimentMatch = analysis4.match(
+    /The overall sentiment of the article is (bearish|bullish|neutral)\./
+  );
   const reasonMatch = analysis4.match(/This is because (.+?)\./);
 
-  const sentimentSentence = sentimentMatch ? sentimentMatch[0] : "Sentiment classification not found.";
+  const sentimentSentence = sentimentMatch
+    ? sentimentMatch[0]
+    : "Sentiment classification not found.";
   const reasonSentence = reasonMatch ? reasonMatch[0] : "Reason not found.";
 
-  // Clear input field
+  // Clear input field and reset height
   document.querySelector("#newsInput").value = "";
+  adjustTextareaHeight();
 
   // Display Results
   loading.remove();
@@ -121,7 +136,7 @@ searchBtn.addEventListener("click", async function () {
   loading.innerText = "Summarizing critical details..";
   container.appendChild(loading);
 
-  newsContainer.innerHTML = ""; // Clear previous results
+  newsContainer.innerHTML = "";
   const date = new Date();
 
   try {
@@ -147,28 +162,31 @@ searchBtn.addEventListener("click", async function () {
       });
 
       // Step 1: Key Information Extraction
-      const prompt1 = `You have heard this news on STOCK: ${symbol}; CURRENT DATE: ${date}; NEWS ARTICLE DATE: ${newsDate}  TITLE: ${title.replace(
+      const prompt1 = `You have heard this news on STOCK: ${symbol}; CURRENT DATE: ${date}; TITLE: ${title.replace(
         /[`'"]/g,
         ""
       )}; URL TO ARTICLE: ${url}; DESCRIPTION: ${description.replace(
         /[`'"]/g,
         ""
-      )}; Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned. Compare current date with news date. Importantly, read if news article is exactly about ${symbol}. In the output, put current date & news date.`;
+      )}; 1. IMPORTANT! If news reported PAST results with no HUGE potential future impact, it is neutral and NOT important. Justify your reasoning. 2. Summarize the critical details from this article in bullet points, highlighting actions, results, any financial terms mentioned. 3. Importantly, read if news article is exactly about ${symbol}.`;
       const analysis1 = await analysis(prompt1);
 
       // Step 2: Sentiment Analysis
       loading.innerText = "Sentiment Analysis..";
-      const prompt2 = `${analysis1}; TASK: Based on the extracted key points, determine the sentiment of the news. Is it positive, negative, or neutral? Justify your reasoning.`;
+      const prompt2 = `${analysis1}; TASK: Based on the extracted key points, determine the sentiment of the news.
+      1. IMPORTANT! If news is just reporting PAST results with no potential future impact, it is neutral and NOT important.
+      2. Is it positive, negative, or neutral? Justify your reasoning.`;
       const analysis2 = await analysis(prompt2);
+      // 2. CHECK: Does this event impact future stock movement (e.g., earnings forecasts, new regulations, CEO changes, upcoming lawsuits)? If YES, keep it relevant. If NO, classify as neutral.
 
       // Step 3: Market Impact Assessment
       loading.innerText = "Market Impact Assessment..";
-      const prompt3 = `${analysis2}; Analyze how the sentiment of the news might impact the stock market. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
+      const prompt3 = `${analysis2}; TASK: Analyze how the sentiment of the news might impact the stock market. 1. IMPORTANT! If news is just reporting PAST results with no potential future impact, it is neutral and NOT important. 2. Would it create bullish, bearish, or neutral behavior for the mentioned companies or sectors? Explain your reasoning.`;
       const analysis3 = await analysis(prompt3);
 
       // Step 4: Final Decision
       loading.innerText = "Loading..";
-      const prompt4 = `${analysis3}; Given the key points, sentiment analysis, and market impact assessment, classify the overall sentiment of the article as bullish, bearish, or neutral. AS THE OUTPUT USER WANTS TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
+      const prompt4 = `${analysis3}; Given the key points, sentiment analysis, and market impact assessment. 1. IMPORTANT! If news is just reporting PAST results with no potential future impact, it is neutral and NOT important. 2. classify the overall sentiment of the article as bullish, bearish, or neutral. AS THE OUTPUT USER WANTS TO SEE ONLY AND ONLY: "bearish", "bullish" or "neutral"`;
       const analysis4 = await analysis(prompt4);
 
       // Display Article
