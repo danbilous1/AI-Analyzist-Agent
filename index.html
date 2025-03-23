@@ -26,17 +26,18 @@
       .news-container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start; /* Aligns articles to the left */
         gap: 20px;
         max-width: 1200px;
       }
 
-      .w-25 {
+      .news-article {
+        width: 100%;
         border: 1px solid #ddd;
         padding: 15px;
         border-radius: 5px;
-        width: 300px;
       }
+
       .news-date {
         font-size: 0.8rem;
         color: grey;
@@ -46,6 +47,7 @@
       }
       .input {
         max-width: 100px;
+        margin: 0;
       }
       .top-right-button {
         position: absolute;
@@ -79,7 +81,6 @@
         padding-left: 20px;
       }
 
-      /* Styling for the textarea */
       #newsInput {
         min-height: 50px;
         resize: none;
@@ -87,8 +88,18 @@
       }
       #newsInput:focus {
         outline: none;
-        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25); /* Black outline on focus */
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
         border-color: #000000;
+      }
+
+      span.bullish {
+        color: rgb(25, 170, 25);
+      }
+      span.bearish {
+        color: rgb(235, 70, 70);
+      }
+      span.neutral {
+        color: grey;
       }
     </style>
   </head>
